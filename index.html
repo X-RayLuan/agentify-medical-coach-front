@@ -39,7 +39,7 @@ h1.big{font-size:46px}
 .dark h1{color:#fff}
 .sub{margin-top:12px;font-size:16px;line-height:1.7;color:var(--muted);max-width:900px}
 .dark .sub{color:rgba(255,255,255,.66)}
-.foot{position:absolute;left:84px;right:84px;bottom:34px;display:flex;justify-content:space-between;
+.foot{position:absolute;left:84px;right:84px;bottom:34px;display:flex;justify-content:space-between;align-items:center;
   font-size:11px;color:var(--faint);letter-spacing:.03em}
 .dark .foot{color:rgba(255,255,255,.36)}
 .note{position:absolute;left:84px;bottom:62px;font-size:11.5px;color:var(--faint);line-height:1.6}
@@ -50,9 +50,21 @@ h1.big{font-size:46px}
 .chip i{width:5px;height:5px;border-radius:50%;background:var(--coral);display:block}
 .kpi{font-size:76px;font-weight:800;color:var(--coral);line-height:1;letter-spacing:-.02em}
 .kpi small{font-size:30px;font-weight:700;margin-left:4px}
+/* 暗场质感：细噪点 + 暗角 */
+.slide.dark::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(115% 88% at 50% 44%,rgba(0,0,0,0) 52%,rgba(0,0,0,.42) 100%);}
+.noise{position:absolute;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>")}
+/* 页脚进度点 */
+.prog{display:inline-flex;gap:5px;align-items:center;margin-left:14px;vertical-align:middle}
+.prog i{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.25;display:block}
+.prog i.on{opacity:1;background:var(--coral);width:16px;border-radius:3px}
+.kpi small{font-size:30px;font-weight:700;margin-left:4px}
 
 @media print{
   html,body{background:#fff;padding:0}
+  .noise{display:none}
+  .grid-ov{opacity:.35}
   .slide{margin:0;box-shadow:none;page-break-after:always;break-after:page}
   .slide:last-child{page-break-after:auto}
 }
@@ -64,47 +76,52 @@ h1.big{font-size:46px}
 <!-- ═══════════ S01 封面 ═══════════ -->
 <section class="slide dark">
   <div class="grid-ov"></div>
-  <svg width="560" height="600" style="position:absolute;right:20px;top:64px;opacity:.95">
-    <defs>
-      <radialGradient id="nglow"><stop offset="0%" stop-color="#E8734A" stop-opacity=".55"/><stop offset="100%" stop-color="#E8734A" stop-opacity="0"/></radialGradient>
-      <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#4E9B95" stop-opacity=".9"/><stop offset="100%" stop-color="#E8734A" stop-opacity=".55"/></linearGradient>
-    </defs>
-    <circle cx="290" cy="300" r="215" fill="url(#nglow)"/>
-    <g stroke="url(#edge)" stroke-width="1.1" fill="none" opacity=".75">
-      <path d="M290 300 L120 168 M290 300 L470 150 M290 300 L112 330 M290 300 L472 322 M290 300 L165 470 M290 300 L430 480 M290 300 L292 108 M290 300 L296 500
-               M120 168 L292 108 M292 108 L470 150 M470 150 L472 322 M472 322 L430 480 M430 480 L296 500 M296 500 L165 470 M165 470 L112 330 M112 330 L120 168"/>
+  <img src="assets/flywheel.jpg" alt=""
+       style="position:absolute;left:618px;top:56px;width:648px;height:648px;object-fit:cover;
+              mix-blend-mode:screen;opacity:.98;
+              -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 58%,transparent 76%)">
+  <svg width="700" height="700" style="position:absolute;left:592px;top:32px;pointer-events:none">
+    <g stroke="rgba(255,255,255,.28)" stroke-width="1" fill="none">
+      <path d="M198 178 L152 148"/><path d="M502 178 L520 152"/>
+      <path d="M198 522 L152 552"/><path d="M502 522 L520 548"/>
     </g>
-    <g fill="#0A343B" stroke="#4E9B95" stroke-width="1.4">
-      <circle cx="120" cy="168" r="17"/><circle cx="470" cy="150" r="17"/><circle cx="112" cy="330" r="17"/>
-      <circle cx="472" cy="322" r="17"/><circle cx="165" cy="470" r="17"/><circle cx="430" cy="480" r="17"/>
-      <circle cx="292" cy="108" r="17"/><circle cx="296" cy="500" r="17"/>
+    <g fill="#E8734A"><circle cx="198" cy="178" r="3.5"/><circle cx="502" cy="178" r="3.5"/>
+      <circle cx="198" cy="522" r="3.5"/><circle cx="502" cy="522" r="3.5"/></g>
+    <g>
+      <rect x="512" y="126" width="126" height="46" rx="6" fill="rgba(3,20,25,.62)"/>
+      <rect x="512" y="542" width="140" height="46" rx="6" fill="rgba(3,20,25,.62)"/>
     </g>
-    <circle cx="290" cy="300" r="52" fill="#0E5B63" stroke="#E8734A" stroke-width="2"/>
-    <circle cx="290" cy="300" r="72" fill="none" stroke="#E8734A" stroke-width="1" opacity=".35"/>
-    <circle cx="290" cy="300" r="96" fill="none" stroke="#E8734A" stroke-width="1" opacity=".16"/>
-    <text x="290" y="295" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">企业</text>
-    <text x="290" y="314" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">大脑</text>
-    <g font-size="10.5" fill="rgba(255,255,255,.62)" text-anchor="middle">
-      <text x="120" y="200">产品知识</text><text x="470" y="182">竞品情报</text><text x="112" y="362">客户画像</text>
-      <text x="472" y="354">拜访纪要</text><text x="165" y="502">合规规则</text><text x="430" y="512">医学证据</text>
-      <text x="292" y="140">经销商</text><text x="296" y="532">成交复盘</text>
+    <g font-size="14" font-weight="700" fill="#fff" font-family="-apple-system,PingFang SC,sans-serif">
+      <text x="146" y="142" text-anchor="end">接得进</text>
+      <text x="526" y="146">管得住</text>
+      <text x="146" y="566" text-anchor="end">回得来</text>
+      <text x="526" y="562">用得上</text>
+    </g>
+    <g font-size="11" fill="rgba(255,255,255,.5)" font-family="-apple-system,PingFang SC,sans-serif">
+      <text x="146" y="160" text-anchor="end">录音 / CRM / 资料</text>
+      <text x="526" y="164">权限 · 水印 · 审核</text>
+      <text x="146" y="584" text-anchor="end">结果回写企业大脑</text>
+      <text x="526" y="580">拜访准备 · 话术 · 情报</text>
     </g>
   </svg>
 
-  <div class="pad" style="top:150px;max-width:660px">
+  <div class="pad" style="top:152px;max-width:600px">
     <div class="eyebrow">AGENTIFY · 企业大脑</div>
     <h1 style="font-size:52px">让每一个医疗销售<br>都成为专家级</h1>
-    <div class="sub" style="font-size:18px;color:rgba(255,255,255,.75);margin-top:20px">
+    <div style="font-size:18px;color:rgba(255,255,255,.75);margin-top:20px">
       AI 销售教练 Agent ｜ 面向中型医药与器械企业
     </div>
-    <div style="display:flex;gap:10px;margin-top:34px;flex-wrap:wrap">
+    <div style="margin-top:18px;font-size:13.5px;color:#F79A72;font-weight:700;letter-spacing:.02em">
+      知识飞轮：越用越准，越准越好用
+    </div>
+    <div style="display:flex;gap:10px;margin-top:30px;flex-wrap:wrap">
       <span class="chip"><i></i>私有化部署 · 数据不出门</span>
       <span class="chip"><i></i>14 天上线</span>
       <span class="chip"><i></i>13 个已落地场景</span>
     </div>
   </div>
-  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售智能体</span><span class="mono">01</span></div>
+  <div class="noise"></div>
+  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售智能体</span><span><span class="prog"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span></span><span class="mono" style="margin-left:14px">01</span></div>
 </section>
 
 <!-- ═══════════ S02 三面挤压 ═══════════ -->
@@ -175,7 +192,8 @@ h1.big{font-size:46px}
   </svg>
 
   <div class="note">行业处境为公开政策与普遍经营现象归纳，非特定企业数据。</div>
-  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span class="mono">02</span></div>
+  <div class="noise"></div>
+  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span><span class="prog"><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span></span><span class="mono" style="margin-left:14px">02</span></div>
 </section>
 
 <!-- ═══════════ S03 先算一笔账 ═══════════ -->
@@ -234,7 +252,8 @@ h1.big{font-size:46px}
   </div>
 
   <div class="note">测算口径：按区域经销商常见薪资与回款结构估算，为示例测算，非本公司客户承诺数值。</div>
-  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span class="mono">03</span></div>
+  <div class="noise"></div>
+  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span><span class="prog"><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span></span><span class="mono" style="margin-left:14px">03</span></div>
 </section>
 
 <!-- ═══════════ S04 漏钱地图 ═══════════ -->
@@ -323,7 +342,8 @@ h1.big{font-size:46px}
   </svg>
 
   <div class="note">以上为医疗器械 / IVD 渠道常见场景归纳，用于说明问题，非特定客户数据。</div>
-  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span class="mono">04</span></div>
+  <div class="noise"></div>
+  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span><span class="prog"><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span></span><span class="mono" style="margin-left:14px">04</span></div>
 </section>
 
 <!-- ═══════════ S05 拜访黑盒 ═══════════ -->
@@ -402,7 +422,8 @@ h1.big{font-size:46px}
   </svg>
 
   <div class="note">时间分配为典型拜访场景示意，用于说明管理盲区，非统计数据。</div>
-  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span class="mono">05</span></div>
+  <div class="noise"></div>
+  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span><span class="prog"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></span></span><span class="mono" style="margin-left:14px">05</span></div>
 </section>
 
 <!-- ═══════════ S06 解法闭环 ═══════════ -->
@@ -475,7 +496,8 @@ h1.big{font-size:46px}
       装在钉钉 / 企微 / 飞书里，销售不用换工具；全套私有化部署在你自己的机器上，数据不出门。</text>
   </svg>
 
-  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span class="mono">06</span></div>
+  <div class="noise"></div>
+  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span><span class="prog"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i></span></span><span class="mono" style="margin-left:14px">06</span></div>
 </section>
 
 <!-- ═══════════ S07 三层架构 ═══════════ -->
@@ -553,7 +575,8 @@ h1.big{font-size:46px}
       共享底座：企业本体 / 权限模型 / 事件管道 / 成本计量 —— 换行业换岗位，这一层不重做。</text>
   </svg>
 
-  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span class="mono">07</span></div>
+  <div class="noise"></div>
+  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span><span class="prog"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i></span></span><span class="mono" style="margin-left:14px">07</span></div>
 </section>
 
 <!-- ═══════════ S08 收益 ═══════════ -->
@@ -605,7 +628,8 @@ h1.big{font-size:46px}
   </svg>
 
   <div class="note">数据口径：首单周期为客户提供的业务数据，样本量与统计周期待补充；成本测算为示例，非承诺数值。</div>
-  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span class="mono">08</span></div>
+  <div class="noise"></div>
+  <div class="foot"><span>AGENTIFY / 企业大脑 × 医疗销售</span><span><span class="prog"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i></span></span><span class="mono" style="margin-left:14px">08</span></div>
 </section>
 
 </body>
